@@ -1,0 +1,18 @@
+apiVersion: v1
+name: mtcnn-fd
+version: 0.1.0
+appVersion: 3.0.10
+description: an AI demo function developped by QZCloud, which now deployed as the default demo in FDN.
+icon: file://../mtcnn.jpg
+keywords:
+- mtcnn
+- "face-detection"
+- ai
+- fdn
+home: about:brank
+sources:
+- not apply yet
+maintainers:
+- name: WuZhenZhou
+  email: wuzhenzhou@qzcloud.com
+engine: gotpl
