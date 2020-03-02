@@ -61,16 +61,11 @@ spec:
           {{- end }}
 {{ toYaml .Values.livenessProbe | indent 10 }}
         readinessProbe:
-          httpGet:
-            path: /run
-            port: {{ ternary "https" "http" .Values.healthcheckHttps }}
-            {{- if .Values.healthcheckHttps }}
-            scheme: HTTPS
-            {{- end }}
-          {{- if .Values.readinessProbeHeaders }}
-            httpHeaders:
-{{ toYaml .Values.readinessProbeHeaders | indent 14 }}
-          {{- end }}
+          exec:
+            command:
+              - curl
+              - -X POST
+              - "http://localhost:8080/init"
 {{ toYaml .Values.readinessProbe | indent 10 }}
         # volumeMounts:
         resources:
