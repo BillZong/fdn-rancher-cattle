@@ -48,18 +48,16 @@ spec:
         ports:
         - name: http
           containerPort: 8080
-        livenessProbe:
-          httpGet:
-            path: /run
-            port: {{ ternary "https" "http" .Values.healthcheckHttps }}
-            {{- if .Values.healthcheckHttps }}
-            scheme: HTTPS
-            {{- end }}
-          {{- if .Values.livenessProbeHeaders }}
-            httpHeaders:
-{{ toYaml .Values.livenessProbeHeaders | indent 14 }}
-          {{- end }}
-{{ toYaml .Values.livenessProbe | indent 10 }}
+        # need implement this probe for HA deployment
+#         livenessProbe:
+#           httpGet:
+#             path: /health
+#             port: "http"
+#             {{- if .Values.livenessProbeHeaders }}
+#             httpHeaders:
+# {{ toYaml .Values.livenessProbeHeaders | indent 14 }}
+#             {{- end }}
+# {{ toYaml .Values.livenessProbe | indent 10 }}
         readinessProbe:
           exec:
             command:
@@ -70,50 +68,16 @@ spec:
         # volumeMounts:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-{{- if .Values.metrics.enabled }}
-      - name: metrics
-        image: {{ template "mtcnnfd.metrics.image" . }}
-        imagePullPolicy: {{ .Values.metrics.image.pullPolicy | quote }}
-        command: [ '/bin/apache_exporter', '-scrape_uri', 'http://status.localhost:80/server-status/?auto']
-        ports:
-        - name: metrics
-          containerPort: 9117
-        livenessProbe:
-          httpGet:
-            path: /metrics
-            port: metrics
-          initialDelaySeconds: 15
-          timeoutSeconds: 5
-        readinessProbe:
-          httpGet:
-            path: /metrics
-            port: metrics
-          initialDelaySeconds: 5
-          timeoutSeconds: 1
-        resources:
-{{ toYaml .Values.metrics.resources | indent 10 }}
-{{- end }}
+
 {{- if .Values.sidecars }}
 {{ toYaml .Values.sidecars | indent 6 }}
 {{- end }}
-      volumes:
-      {{- if and .Values.allowOverrideNone .Values.customHTAccessCM}}
-      - name: custom-htaccess
-        configMap:
-          name: {{ template "mtcnnfd.customHTAccessCM" . }}
-      {{- end }}
-      - name: mtcnnfd-data
-      {{- if .Values.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ .Values.persistence.existingClaim | default (include "mtcnnfd.fullname" .) }}
-      {{- else }}
-        emptyDir: {}
-      {{ end }}
-    {{- if .Values.nodeSelector }}
+
+      {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end -}}
-    {{- with .Values.affinity }}
+      {{- with .Values.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}

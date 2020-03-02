@@ -17,7 +17,7 @@ questions:
         default: "wuzhenzhou3/mtcnnfd"
         description: "mtcnnfd image name"
         type: string
-        label: WordPress Image Name
+        label: mtcnn-fd Image Name
       - variable: image.tag
         default: "v3.0.10"
         description: "mtcnnfd image tag"

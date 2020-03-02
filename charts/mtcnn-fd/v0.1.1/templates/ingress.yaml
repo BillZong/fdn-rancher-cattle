@@ -2,10 +2,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "wordpress.fullname" . }}
+  name: {{ template "mtcnnfd.fullname" . }}
   labels:
-    app: "{{ template "wordpress.fullname" . }}"
-    chart: "{{ template "wordpress.chart" . }}"
+    app: "{{ template "mtcnnfd.fullname" . }}"
+    chart: "{{ template "mtcnnfd.chart" . }}"
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
   annotations:
@@ -23,7 +23,7 @@ spec:
       paths:
       - path: {{ default "/" .path }}
         backend:
-          serviceName: "{{ template "wordpress.fullname" $ }}"
+          serviceName: "{{ template "mtcnnfd.fullname" $ }}"
           servicePort: http
   {{- end }}
   {{- if .Values.ingress.tls }}

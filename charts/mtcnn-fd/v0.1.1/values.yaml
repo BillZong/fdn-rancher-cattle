@@ -52,22 +52,14 @@ service:
   type: LoadBalancer
   # HTTP Port
   port: 8066
-  # HTTPS Port
-  httpsPort: 8067
-  # HTTPS Target Port
-  # defaults to https unless overridden to the specified port.
-  # if you want the target port to be "http" or "80" you can specify that here.
-  httpsTargetPort: http
   # metrics Port
   metricsPort: 9117
   ##
   ## nodePorts:
   ##   http: <to set explicitly, choose port between 30000-32767>
-  ##   https: <to set explicitly, choose port between 30000-32767>
   ##   metrics: <to set explicitly, choose port between 30000-32767>
   nodePorts:
     http: ""
-    https: ""
     metrics: ""
   ## Enable client source IP preservation
   ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
@@ -76,9 +68,6 @@ service:
   annotations: {}
   ## Extra ports to expose (normally used with the `sidecar` value)
   # extraPorts:
-
-## Allow health checks to be pointed at the https port
-healthcheckHttps: false
 
 ## Configure extra options for liveness and readiness probes
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
@@ -89,7 +78,7 @@ livenessProbe:
   failureThreshold: 6
   successThreshold: 1
 readinessProbe:
-  initialDelaySeconds: 30
+  initialDelaySeconds: 20
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 6
