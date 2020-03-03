@@ -1,0 +1,25 @@
+labels:
+  io.cattle.role: project # options are cluster/project
+  io.rancher.app_min_version: 0.1.1
+categories:
+  - AI
+  - FaceDetection
+questions:
+  - variable: defaultImage
+    default: true
+    description: "Use default Docker image"
+    label: Use Default Image
+    type: boolean
+    show_subquestion_if: false
+    group: "Container Images"
+    subquestions:
+      - variable: image.repository
+        default: "wuzhenzhou3/mtcnnfd"
+        description: "mtcnnfd image name"
+        type: string
+        label: mtcnn-fd Image Name
+      - variable: image.tag
+        default: "v3.0.10"
+        description: "mtcnnfd image tag"
+        type: string
+        label: Image Tag
